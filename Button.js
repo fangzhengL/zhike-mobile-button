@@ -57,15 +57,12 @@ export default class ZKButton extends Component {
   }
 
   _toggle() {
-    const newState = { ...this.state };
-    newState.switch = !newState.switch;
-
-    console.log('zkbutton setState: ', newState);
-
-    this.setState(newState);
+    this.setState({
+      switch: !this.state.switch,
+    });
   }
 
-  get titleStyles(){
+  get titleStyles() {
     let ret = [styles.title];
     const customStyle = (
       (this.state.switch && this.props.titleStyleAlt) ?
@@ -84,7 +81,7 @@ export default class ZKButton extends Component {
     return ret;
   }
 
-  get imageStyles(){
+  get imageStyles() {
     let ret = [styles.image];
     if (this.props.imageStyle) {
       if (Array.isArray(this.props.imageStyle)) {
