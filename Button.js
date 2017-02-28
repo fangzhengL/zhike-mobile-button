@@ -151,7 +151,7 @@ export default class ZKButton extends Component {
         style={this.props.style}
       >
         <View
-          styl={[{ flex:1, alignSelf:'stretch' }, styles.buttonWrapper]}
+          style={[{ flex:1, alignSelf:'stretch' }, styles.buttonWrapper]}
         >
           {subviews}
         </View>
