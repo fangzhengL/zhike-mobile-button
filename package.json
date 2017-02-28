@@ -1,8 +1,11 @@
 {
   "name": "zhike-mobile-button",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "",
   "main": "Button.js",
+  "dependencies": {
+    "react-native-linear-gradient": "^1.5.15"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

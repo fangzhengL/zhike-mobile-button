@@ -14,6 +14,7 @@ import {
   Image,
   TouchableHighlight,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default class ZKButton extends Component {
   static propTypes = {
@@ -28,7 +29,10 @@ export default class ZKButton extends Component {
     titleStyleHighlight: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
     onPress: PropTypes.func,
 
+    buttonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
     onOff: PropTypes.bool,
+
+    gradientColors: PropTypes.arrayOf(PropTypes.string),
 
   };
 
@@ -151,8 +155,16 @@ export default class ZKButton extends Component {
         style={this.props.style}
       >
         <View
-          style={[{ flex:1, alignSelf:'stretch' }, styles.buttonWrapper]}
+          style={[{ flex:1, alignSelf:'stretch' }, styles.buttonWrapper, this.props.buttonStyle]}
         >
+          {
+            !this.props.gradientColors ? null : (
+              <LinearGradient
+                colors={this.props.gradientColors}
+                style={{ position:'absolute', left:0, right:0, top:0, bottom:0, borderWidth:0 }}
+              />
+            )
+          }
           {subviews}
         </View>
       </TouchableHighlight>
