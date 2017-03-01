@@ -34,24 +34,29 @@ export default class ZKButton extends Component {
 
     gradientColors: PropTypes.arrayOf(PropTypes.string),
 
+    horizontalGradient: PropTypes.bool,
   };
 
   state: {
     highlighted:boolean,
     switch:boolean,
+    buttonFrame:any,
   }
   _onShowUnderlay: () => void
   _onHideUnderlay: () => void
+  _layoutButton: (e:any) => void
 
   constructor(props:any) {
     super(props);
     this.state = {
-      switch:  !!(props && props.onOff),
-      highlighted: false,
+      switch:!!(props && props.onOff),
+      highlighted:false,
+      buttonFrame:null
     };
 
     this._onShowUnderlay = this._onShowUnderlay.bind(this);
     this._onHideUnderlay = this._onHideUnderlay.bind(this);
+    this._layoutButton = this._layoutButton.bind(this);
   }
 
   componentWillReceiveProps(nextProps:any) {
@@ -111,6 +116,32 @@ export default class ZKButton extends Component {
     });
   }
 
+  _layoutButton(e) {
+    const layout = e && e.nativeEvent && e.nativeEvent.layout;
+    if (e) {
+      this.setState({
+        buttonFrame: {
+          width:layout.width,
+          height:layout.height,
+        }
+      });
+    }
+  }
+
+  _width() {
+    if (!this.state.buttonFrame) {
+      return 0;
+    }
+    return this.state.buttonFrame.width || 0;
+  }
+
+  _height() {
+    if (!this.state.buttonFrame) {
+      return 0;
+    }
+    return this.state.buttonFrame.height || 0;
+  }
+
   render() {
     const image = this.props.imgSource ?
     (
@@ -143,6 +174,11 @@ export default class ZKButton extends Component {
       throw new Error('nothing provided for this button, nonsense!');
     }
 
+
+    const w = this._width();
+    const h = this._height();
+    const minDim = w > h ? h : w;
+    const maxDim = w > h ? w : h;
     return (
       <TouchableHighlight
         underlayColor={'transparent'}
@@ -156,12 +192,21 @@ export default class ZKButton extends Component {
       >
         <View
           style={[{ flex:1, alignSelf:'stretch' }, styles.buttonWrapper, this.props.buttonStyle]}
+          onLayout={this._layoutButton}
         >
           {
             !this.props.gradientColors ? null : (
               <LinearGradient
                 colors={this.props.gradientColors}
-                style={{ position:'absolute', left:0, right:0, top:0, bottom:0, borderWidth:0 }}
+                style={{
+                  transform:[{ rotateZ:this.props.horizontalGradient ? '270deg' : '0deg' }],
+                  position:'absolute',
+                  left:0,
+                  top:(minDim - maxDim) / 2.0,
+                  width:maxDim,
+                  height:maxDim,
+                  borderWidth:0,
+                }}
               />
             )
           }
