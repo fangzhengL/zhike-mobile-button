@@ -189,6 +189,7 @@ export default class ZKButton extends Component {
         onShowUnderlay={this._onShowUnderlay}
         onHideUnderlay={this._onHideUnderlay}
         style={this.props.style}
+        disabled={!!this.props.disabled}
       >
         <View
           style={[{ flex:1, alignSelf:'stretch' }, styles.buttonWrapper, this.props.buttonStyle]}
