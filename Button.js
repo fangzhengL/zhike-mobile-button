@@ -33,6 +33,8 @@ export default class ZKButton extends Component {
     onOff: PropTypes.bool,
 
     gradientColors: PropTypes.arrayOf(PropTypes.string),
+    gradientStart: PropTypes.arrayOf(PropTypes.number),
+    gradientEnd: PropTypes.arrayOf(PropTypes.number),
 
     horizontalGradient: PropTypes.bool,
   };
@@ -148,7 +150,7 @@ export default class ZKButton extends Component {
       this.state.switch && this.props.imgSourceAlt ?
       this.props.imgSourceAlt : this.props.imgSource
     ) : null;
-
+    const { gradientStart, gradientEnd } = this.props;
     const subviews = [];
 
     if (this.props.imgSource) {
@@ -174,11 +176,6 @@ export default class ZKButton extends Component {
       throw new Error('nothing provided for this button, nonsense!');
     }
 
-
-    const w = this._width();
-    const h = this._height();
-    const minDim = w > h ? h : w;
-    const maxDim = w > h ? w : h;
     return (
       <TouchableHighlight
         underlayColor={'transparent'}
@@ -188,11 +185,11 @@ export default class ZKButton extends Component {
         }}
         onShowUnderlay={this._onShowUnderlay}
         onHideUnderlay={this._onHideUnderlay}
-        style={this.props.style}
+        style={[styles.container, this.props.style]}
         disabled={!!this.props.disabled}
       >
         <View
-          style={[{ flex:1, alignSelf:'stretch' }, styles.buttonWrapper, this.props.buttonStyle]}
+          style={[styles.buttonWrapper, this.props.buttonStyle]}
           onLayout={this._layoutButton}
         >
           {
@@ -200,14 +197,17 @@ export default class ZKButton extends Component {
               <LinearGradient
                 colors={this.props.gradientColors}
                 style={{
-                  transform:[{ rotateZ:this.props.horizontalGradient ? '270deg' : '0deg' }],
                   position:'absolute',
                   left:0,
-                  top:(minDim - maxDim) / 2.0,
-                  width:maxDim,
-                  height:maxDim,
+                  top:0,
+                  bottom:0,
+                  right:0,
                   borderWidth:0,
+                  backgroundColor:'gray',
+                  opacity:this.props.disabled ? 0.5 : 1,
                 }}
+                {...gradientStart ? { start:gradientStart } : {}}
+                {...gradientEnd ? { end: gradientEnd } : {}}
               />
             )
           }
@@ -219,9 +219,16 @@ export default class ZKButton extends Component {
 }
 
 let styles = StyleSheet.create({
+  container: {
+    alignItems:'center',
+    justifyContent: 'center',
+  },
   buttonWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'stretch',
+    flex: 1,
+    overflow: 'hidden',
   },
   image: {
   },
