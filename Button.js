@@ -144,6 +144,14 @@ export default class ZKButton extends Component {
     return this.state.buttonFrame.height || 0;
   }
 
+  _gradientColors() {
+    if (this.state.highlighted) {
+      return this.props.highlightGradientColors || ['#CD5026', '#CE6D00'];
+    } else {
+      return this.props.gradientColors;
+    }
+  }
+
   render() {
     const image = this.props.imgSource ?
     (
@@ -195,7 +203,7 @@ export default class ZKButton extends Component {
           {
             !this.props.gradientColors ? null : (
               <LinearGradient
-                colors={this.props.gradientColors}
+                colors={this._gradientColors()}
                 style={{
                   position:'absolute',
                   left:0,
