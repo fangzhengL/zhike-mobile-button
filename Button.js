@@ -37,6 +37,9 @@ export default class ZKButton extends Component {
     gradientEnd: PropTypes.arrayOf(PropTypes.number),
 
     horizontalGradient: PropTypes.bool,
+
+    underlayColor: PropTypes.string,
+    activeOpacity: PropTypes.number,
   };
 
   state: {
@@ -186,8 +189,8 @@ export default class ZKButton extends Component {
 
     return (
       <TouchableHighlight
-        underlayColor={'transparent'}
-        activeOpacity={1}
+        underlayColor={this.props.underlayColor || 'transparent'}
+        activeOpacity={typeof this.props.activeOpacity === 'number' ? this.props.activeOpacity : 1}
         onPress={(e) => {
           this.props.onPress(e);
         }}
