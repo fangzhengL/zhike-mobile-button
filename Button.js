@@ -33,8 +33,8 @@ export default class ZKButton extends Component {
     onOff: PropTypes.bool,
 
     gradientColors: PropTypes.arrayOf(PropTypes.string),
-    gradientStart: PropTypes.arrayOf(PropTypes.number),
-    gradientEnd: PropTypes.arrayOf(PropTypes.number),
+    gradientStart: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
+    gradientEnd: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
 
     horizontalGradient: PropTypes.bool,
 
